@@ -1,36 +1,23 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { ExternalLink, Smartphone, Terminal, AlertCircle } from 'lucide-react'
+import { ExternalLink, Github, Smartphone, Terminal, AlertCircle } from 'lucide-react'
 import { PROJECTS } from '../config'
 import styles from './Projects.module.css'
 
-function ProjectCard({ project, index }) {
-  const ref = useRef()
-  const inView = useInView(ref, { once: true, margin: '-80px' })
-
-  if (project.type === 'ecommerce') return <EcommerceProject project={project} index={index} inView={inView} ref_={ref} />
-  if (project.type === 'restaurant') return <RestaurantProject project={project} index={index} inView={inView} ref_={ref} />
-  if (project.type === 'ide') return <IdeProject project={project} index={index} inView={inView} ref_={ref} />
-  return null
-}
-
-function BrowserMockup({ url, accent = '#c9a86c', children }) {
+function BrowserMockup({ url, children }) {
   return (
     <div className={styles.browserFrame}>
       <div className={styles.browserBar}>
-        <div className={styles.browserDots}>
+        <div className={styles.browserDots} aria-hidden="true">
           <span style={{ background: '#ff5f56' }} />
           <span style={{ background: '#ffbd2e' }} />
           <span style={{ background: '#27c93f' }} />
         </div>
         <div className={styles.browserUrl}>
-          <span className={styles.urlLock}>🔒</span>
           <span>{url}</span>
         </div>
       </div>
-      <div className={styles.browserScreen}>
-        {children}
-      </div>
+      <div className={styles.browserScreen}>{children}</div>
     </div>
   )
 }
@@ -41,125 +28,149 @@ function PhoneMockup({ children }) {
       <div className={styles.phoneCameraArea}>
         <div className={styles.phoneCameraIsland} />
       </div>
-      <div className={styles.phoneScreen}>
-        {children}
-      </div>
+      <div className={styles.phoneScreen}>{children}</div>
       <div className={styles.phoneHomeBar} />
     </div>
   )
 }
 
-function EcommerceProject({ project, index, inView, ref_ }) {
+function CaseStudyDetails({ project }) {
   return (
-    <motion.div
+    <>
+      <div className={styles.caseGrid}>
+        <div className={styles.caseBlock}>
+          <span className={styles.caseLabel}>Business Problem</span>
+          <p className={styles.caseText}>{project.problem}</p>
+        </div>
+        <div className={styles.caseBlock}>
+          <span className={styles.caseLabel}>Solution</span>
+          <p className={styles.caseText}>{project.solution}</p>
+        </div>
+      </div>
+
+      <ul className={styles.highlights}>
+        {project.highlights.map((h) => (
+          <li key={h}>{h}</li>
+        ))}
+      </ul>
+
+      <div className={styles.techTags}>
+        {project.tech.map((t) => (
+          <span key={t} className={styles.tag}>
+            {t}
+          </span>
+        ))}
+      </div>
+
+      <div className={styles.ctaRow}>
+        {project.url && (
+          <a
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.projectCta}
+          >
+            <ExternalLink size={14} />
+            {project.cta || 'Live Demo'}
+          </a>
+        )}
+        {project.githubUrl && (
+          <a
+            href={project.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.githubCta}
+          >
+            <Github size={14} />
+            View Code
+          </a>
+        )}
+      </div>
+    </>
+  )
+}
+
+function EcommerceProject({ project, inView, ref_ }) {
+  return (
+    <motion.article
       ref={ref_}
       className={styles.projectRow}
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 32 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
     >
       <div className={styles.projectInfo}>
         <div className={styles.projectNum}>{project.id}</div>
         <div className={styles.projectCategory}>{project.category}</div>
         <h3 className={styles.projectTitle}>{project.title}</h3>
         <p className={styles.projectDesc}>{project.description}</p>
-        <ul className={styles.highlights}>
-          {project.highlights.map((h, i) => (
-            <li key={i}>{h}</li>
-          ))}
-        </ul>
-        <div className={styles.techTags}>
-          {project.tech.map(t => (
-            <span key={t} className={styles.tag}>{t}</span>
-          ))}
-        </div>
-        <a
-          href={project.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.projectCta}
-        >
-          <ExternalLink size={14} />
-          {project.cta}
-        </a>
+        <CaseStudyDetails project={project} />
       </div>
 
       <div className={styles.projectVisual}>
-        <motion.div
-          className={styles.tiltCard}
-          whileHover={{ rotateY: -5, rotateX: 3, scale: 1.02 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-          style={{ '--accent': project.accent }}
-        >
+        <div className={styles.tiltCard} style={{ '--accent': project.accent }}>
           <BrowserMockup url="sa-parties.vercel.app">
             <div className={styles.saMockContent}>
-              {/* Party e-commerce mock */}
               <div className={styles.mockHeader}>
-                <div className={styles.mockLogo}>🎉 SA PARTIES</div>
+                <div className={styles.mockLogo}>SA PARTIES</div>
                 <div className={styles.mockNav}>
-                  <span>Products</span><span>Orders</span><span>Cart</span>
+                  <span>Catalog</span>
+                  <span>Orders</span>
+                  <span>Cart</span>
                 </div>
               </div>
               <div className={styles.mockHeroStrip}>
-                <span>Celebrate Every Moment ✨</span>
+                <span>Celebration &amp; Party Supplies Store</span>
               </div>
               <div className={styles.mockProducts}>
-                {['🎂 Birthday', '🎊 Events', '🎈 Balloons', '✨ Decor', '🎁 Gifts', '🪅 Party'].map(p => (
-                  <div key={p} className={styles.mockProduct}><span>{p}</span></div>
+                {['Birthday', 'Events', 'Balloons', 'Decor', 'Gifts', 'Party'].map((p) => (
+                  <div key={p} className={styles.mockProduct}>
+                    <span>{p}</span>
+                  </div>
                 ))}
               </div>
             </div>
           </BrowserMockup>
-        </motion.div>
+        </div>
       </div>
-    </motion.div>
+    </motion.article>
   )
 }
 
-function RestaurantProject({ project, index, inView, ref_ }) {
+function RestaurantProject({ project, inView, ref_ }) {
   return (
-    <motion.div
+    <motion.article
       ref={ref_}
       className={`${styles.projectRow} ${styles.reversed}`}
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 32 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.65, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
     >
       <div className={styles.projectVisual}>
-        <motion.div
-          className={styles.dualMockup}
-          whileHover={{ scale: 1.01 }}
-          transition={{ type: 'spring', stiffness: 200 }}
-        >
-          <motion.div
-            className={styles.browserWrap}
-            whileHover={{ rotateY: 3, rotateX: -2 }}
-            transition={{ type: 'spring', stiffness: 250, damping: 20 }}
-            style={{ '--accent': project.accent }}
-          >
+        <div className={styles.dualMockup}>
+          <div className={styles.browserWrap} style={{ '--accent': project.accent }}>
             <BrowserMockup url="little-chef-pizza.vercel.app">
               <div className={styles.pizzaMockContent}>
                 <div className={styles.mockHeader} style={{ background: '#1a0a00' }}>
-                  <div className={styles.mockLogo} style={{ color: '#e8572a' }}>🍕 LITTLE CHEF PIZZA</div>
+                  <div className={styles.mockLogo} style={{ color: '#e8572a' }}>
+                    LITTLE CHEF PIZZA
+                  </div>
                 </div>
-                <div className={styles.mockHeroStrip} style={{ background: '#e8572a' }}>
+                <div className={styles.mockHeroStrip} style={{ background: '#e8572a', color: '#fff' }}>
                   <span>Order Online · Gujrat, Pakistan</span>
                 </div>
                 <div className={styles.mockProducts}>
-                  {['🍕 Margherita', '🌶️ Spicy', '🧀 Cheese', '🥩 BBQ'].map(p => (
-                    <div key={p} className={`${styles.mockProduct} ${styles.pizzaItem}`}><span>{p}</span></div>
+                  {['Margherita', 'Spicy', 'Cheese', 'BBQ'].map((p) => (
+                    <div key={p} className={`${styles.mockProduct} ${styles.pizzaItem}`}>
+                      <span>{p}</span>
+                    </div>
                   ))}
                 </div>
               </div>
             </BrowserMockup>
-          </motion.div>
+          </div>
 
-          {/* Phone mockup for the app */}
-          <motion.div
-            className={styles.phoneWrap}
-            whileHover={{ rotateY: -4, rotateX: 2, translateY: -8 }}
-            transition={{ type: 'spring', stiffness: 250, damping: 20 }}
-          >
+          <div className={styles.phoneWrap}>
             <div className={styles.appBadge}>
               <Smartphone size={12} />
               WEBSITE + MOBILE APP
@@ -167,20 +178,22 @@ function RestaurantProject({ project, index, inView, ref_ }) {
             <PhoneMockup>
               <div className={styles.appMock}>
                 <div className={styles.appHeader}>
-                  <span>🍕 Little Chef</span>
+                  <span>Little Chef</span>
                   <span style={{ fontSize: 10, color: '#e8572a' }}>Gujrat</span>
                 </div>
                 <div className={styles.appMenuSection}>
                   <div className={styles.appSectionLabel}>MENU</div>
-                  {['Margherita — Rs. 450', 'BBQ Chicken — Rs. 650', 'Spicy Blast — Rs. 550'].map(i => (
-                    <div key={i} className={styles.appMenuItem}>{i}</div>
+                  {['Margherita', 'BBQ Chicken', 'Spicy Blast'].map((item) => (
+                    <div key={item} className={styles.appMenuItem}>
+                      {item}
+                    </div>
                   ))}
                 </div>
-                <button className={styles.appOrderBtn}>Order Now →</button>
+                <div className={styles.appOrderBtn}>Order Now →</div>
               </div>
             </PhoneMockup>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
 
       <div className={styles.projectInfo}>
@@ -192,39 +205,20 @@ function RestaurantProject({ project, index, inView, ref_ }) {
           Website + Mobile Application
         </div>
         <p className={styles.projectDesc}>{project.description}</p>
-        <ul className={styles.highlights}>
-          {project.highlights.map((h, i) => (
-            <li key={i} style={h.includes('mobile') ? { color: 'var(--text-primary)', fontWeight: 500 } : {}}>{h}</li>
-          ))}
-        </ul>
-        <div className={styles.techTags}>
-          {project.tech.map(t => (
-            <span key={t} className={styles.tag}>{t}</span>
-          ))}
-        </div>
-        <a
-          href={project.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.projectCta}
-          style={{ '--cta-color': project.accent, '--cta-bg': project.accent }}
-        >
-          <ExternalLink size={14} />
-          {project.cta}
-        </a>
+        <CaseStudyDetails project={project} />
       </div>
-    </motion.div>
+    </motion.article>
   )
 }
 
-function IdeProject({ project, index, inView, ref_ }) {
+function IdeProject({ project, inView, ref_ }) {
   return (
-    <motion.div
+    <motion.article
       ref={ref_}
       className={styles.projectRow}
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 32 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
     >
       <div className={styles.projectInfo}>
         <div className={styles.projectNum}>{project.id}</div>
@@ -235,33 +229,18 @@ function IdeProject({ project, index, inView, ref_ }) {
           Under Development
         </div>
         <p className={styles.projectDesc}>{project.description}</p>
-        <ul className={styles.highlights}>
-          {project.highlights.map((h, i) => (
-            <li key={i}>{h}</li>
-          ))}
-        </ul>
-        <div className={styles.techTags}>
-          {project.tech.map(t => (
-            <span key={t} className={styles.tag}>{t}</span>
-          ))}
-        </div>
+        <CaseStudyDetails project={project} />
         <div className={styles.devNote}>
           <AlertCircle size={13} />
-          This project is currently under active development.
+          Currently in active development — preview reflects implemented capabilities.
         </div>
       </div>
 
       <div className={styles.projectVisual}>
-        <motion.div
-          className={`${styles.tiltCard} ${styles.ideCard}`}
-          whileHover={{ rotateY: -4, rotateX: 2, scale: 1.01 }}
-          transition={{ type: 'spring', stiffness: 250, damping: 25 }}
-          style={{ '--accent': project.accent }}
-        >
+        <div className={`${styles.tiltCard} ${styles.ideCard}`} style={{ '--accent': project.accent }}>
           <div className={styles.ideEditor}>
-            {/* Title bar */}
             <div className={styles.ideTitleBar}>
-              <div className={styles.browserDots}>
+              <div className={styles.browserDots} aria-hidden="true">
                 <span style={{ background: '#ff5f56' }} />
                 <span style={{ background: '#ffbd2e' }} />
                 <span style={{ background: '#27c93f' }} />
@@ -269,13 +248,12 @@ function IdeProject({ project, index, inView, ref_ }) {
               <span className={styles.ideName}>
                 <Terminal size={12} /> py-terminal
               </span>
-              <span className={styles.ideLang}>Python</span>
+              <span className={styles.ideLang}>Python / C++</span>
             </div>
 
-            {/* Code editor */}
             <div className={styles.ideContent}>
-              <div className={styles.ideLines}>
-                {[1,2,3,4,5,6,7,8,9,10].map(n => (
+              <div className={styles.ideLines} aria-hidden="true">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                   <span key={n}>{n}</span>
                 ))}
               </div>
@@ -295,72 +273,71 @@ function IdeProject({ project, index, inView, ref_ }) {
                   <span className={styles.cTxt}>    </span>
                   <span className={styles.cKw}>return</span>
                   <span className={styles.cNm}> ai</span>
-                  <span className={styles.cTxt}>.generate(</span>
-                </div>
-                <div className={styles.codeLine}>
-                  <span className={styles.cTxt}>        prompt=prompt</span>
-                </div>
-                <div className={styles.codeLine}>
-                  <span className={styles.cTxt}>    )</span>
+                  <span className={styles.cTxt}>.generate(prompt=prompt)</span>
                 </div>
                 <div className={styles.codeLine}>&nbsp;</div>
                 <div className={styles.codeLine}>
-                  <span className={styles.cCmt}># AI-powered coding ✨</span>
+                  <span className={styles.cCmt}># AI-assisted coding workflow</span>
                 </div>
                 <div className={styles.codeLine}>
                   <span className={styles.cNm}>result</span>
                   <span className={styles.cTxt}> = solve_problem(</span>
-                </div>
-                <div className={styles.codeLine}>
-                  <span className={styles.cStr}>    &quot;Write hello world&quot;</span>
+                  <span className={styles.cStr}>&quot;Optimize loop&quot;</span>
+                  <span className={styles.cTxt}>)</span>
                 </div>
               </div>
             </div>
 
-            {/* Terminal */}
             <div className={styles.ideTerminal}>
               <div className={styles.termTitle}>
                 <Terminal size={10} /> terminal
               </div>
               <div className={styles.termOutput}>
-                <span className={styles.termPrompt}>$</span> python main.py<br />
-                <span style={{ color: '#4ade80' }}>Hello, World! ✓</span><br />
-                <span style={{ color: '#5b8def' }}>AI Assistant: Ready</span><br />
-                <span className={styles.termCursor}>█</span>
+                <span className={styles.termPrompt}>$</span> python main.py
+                <br />
+                <span style={{ color: '#4ade80' }}>Execution complete ✓</span>
+                <br />
+                <span style={{ color: '#5b8def' }}>Gemini AI Assistant: Ready</span>
               </div>
             </div>
 
-            {/* AI Panel */}
             <div className={styles.aiPanel}>
               <div className={styles.aiPanelHeader}>
                 <span className={styles.aiDot} />
                 Gemini AI Agent
               </div>
               <div className={styles.aiMsg}>
-                <span>💡 Suggestion: Use list comprehension for better performance</span>
+                <span>Contextual code assistance &amp; debugging in the browser.</span>
               </div>
               <div className={styles.aiBadge}>UNDER DEVELOPMENT</div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
-    </motion.div>
+    </motion.article>
   )
 }
 
-export default function Projects() {
+function ProjectCard({ project }) {
   const ref = useRef()
-  const inView = useInView(ref, { once: true, margin: '-60px' })
+  const inView = useInView(ref, { once: true, margin: '-80px' })
 
+  if (project.type === 'ecommerce') return <EcommerceProject project={project} inView={inView} ref_={ref} />
+  if (project.type === 'restaurant') return <RestaurantProject project={project} inView={inView} ref_={ref} />
+  if (project.type === 'ide') return <IdeProject project={project} inView={inView} ref_={ref} />
+  return null
+}
+
+export default function Projects() {
   return (
-    <section id="projects" className={`section ${styles.projects}`} ref={ref}>
+    <section id="projects" className={`section ${styles.projects}`}>
       <div className="container">
         <div className={styles.header}>
           <div>
-            <div className="section-label">Work</div>
+            <div className="section-label">Featured Projects</div>
             <h2 className="section-title">Selected Works.</h2>
             <p className={styles.subtitle}>
-              Real projects, practical solutions, and digital experiences built with purpose.
+              Real-world applications built to solve practical business and user challenges.
             </p>
           </div>
           <div className={styles.projectCount} aria-hidden="true">
@@ -369,10 +346,10 @@ export default function Projects() {
         </div>
 
         <div className={styles.projectsList}>
-          {PROJECTS.map((project, i) => (
+          {PROJECTS.map((project) => (
             <div key={project.id} className={styles.projectWrapper}>
               <div className={styles.projectDivider} />
-              <ProjectCard project={project} index={i} />
+              <ProjectCard project={project} />
             </div>
           ))}
         </div>

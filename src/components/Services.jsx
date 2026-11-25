@@ -1,24 +1,24 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import {
-  Globe, ShoppingCart, UtensilsCrossed, LayoutDashboard, Layers, Smartphone, Bot
-} from 'lucide-react'
+import { Globe, ShoppingCart, Layers, Bot, Building2, ArrowUpRight } from 'lucide-react'
 import { SERVICES } from '../config'
 import styles from './Services.module.css'
 
 const iconMap = {
-  Globe: Globe,
-  ShoppingCart: ShoppingCart,
-  UtensilsCrossed: UtensilsCrossed,
-  LayoutDashboard: LayoutDashboard,
-  Layers: Layers,
-  Smartphone: Smartphone,
-  Bot: Bot,
+  Globe,
+  ShoppingCart,
+  Layers,
+  Bot,
+  Building2,
 }
 
 export default function Services() {
   const ref = useRef()
   const inView = useInView(ref, { once: true, margin: '-80px' })
+
+  const scrollToContact = () => {
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+  }
 
   return (
     <section id="services" className={`section ${styles.services}`} ref={ref}>
@@ -26,11 +26,11 @@ export default function Services() {
         <div className={styles.header}>
           <div>
             <div className="section-label">Services</div>
-            <h2 className="section-title">What I Can Build For You.</h2>
+            <h2 className="section-title">Solutions Built for Growth.</h2>
           </div>
           <p className={styles.headerDesc}>
-            From concept to deployment — turning ideas into<br />
-            functional, polished digital products.
+            Practical digital products designed to solve operational bottlenecks,
+            attract customers, and scale with your business.
           </p>
         </div>
 
@@ -38,13 +38,12 @@ export default function Services() {
           {SERVICES.map((service, i) => {
             const Icon = iconMap[service.icon]
             return (
-              <motion.div
+              <motion.article
                 key={service.title}
                 className={styles.serviceCard}
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: i * 0.08 }}
-                whileHover={{ y: -4 }}
+                transition={{ duration: 0.5, delay: i * 0.06 }}
               >
                 <div className={styles.cardTop}>
                   <div className={styles.iconWrap}>
@@ -54,9 +53,39 @@ export default function Services() {
                 </div>
                 <h3 className={styles.cardTitle}>{service.title}</h3>
                 <p className={styles.cardDesc}>{service.description}</p>
-              </motion.div>
+                <button
+                  type="button"
+                  className={styles.cardLink}
+                  onClick={scrollToContact}
+                >
+                  Discuss a project
+                  <ArrowUpRight size={13} />
+                </button>
+              </motion.article>
             )
           })}
+
+          {/* Conversion CTA card to complete the 3x2 grid cleanly */}
+          <motion.div
+            className={`${styles.serviceCard} ${styles.ctaCard}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: SERVICES.length * 0.06 }}
+          >
+            <div className={styles.ctaEyebrow}>Custom Requirements</div>
+            <h3 className={styles.ctaTitle}>Have a specific project in mind?</h3>
+            <p className={styles.cardDesc}>
+              Let&rsquo;s discuss your goals and map out the right technical approach for your business.
+            </p>
+            <button
+              type="button"
+              className={styles.ctaButton}
+              onClick={scrollToContact}
+            >
+              Start a Conversation
+              <ArrowUpRight size={14} />
+            </button>
+          </motion.div>
         </div>
       </div>
     </section>

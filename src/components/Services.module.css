@@ -6,7 +6,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 64px;
+  margin-bottom: 56px;
   gap: 40px;
 }
 
@@ -14,6 +14,7 @@
   .header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 16px;
   }
 }
 
@@ -22,7 +23,7 @@
   font-size: 15px;
   color: var(--text-secondary);
   line-height: 1.8;
-  max-width: 280px;
+  max-width: 360px;
   text-align: right;
 }
 
@@ -35,12 +36,13 @@
 
 .serviceGrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0;
-  border: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 960px) {
   .serviceGrid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -53,40 +55,17 @@
 }
 
 .serviceCard {
-  padding: 36px 28px;
+  padding: 36px 30px;
   border-right: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   gap: 16px;
-  transition: background 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  cursor: default;
+  transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .serviceCard:hover {
   background: var(--accent-glow);
-}
-
-.serviceCard:nth-child(4n) {
-  border-right: none;
-}
-
-@media (max-width: 1024px) {
-  .serviceCard:nth-child(2n) {
-    border-right: none;
-  }
-  .serviceCard:nth-child(4n) {
-    border-right: 1px solid var(--border);
-  }
-  .serviceCard:last-child {
-    border-right: none;
-  }
-}
-
-@media (max-width: 600px) {
-  .serviceCard {
-    border-right: none;
-  }
 }
 
 .cardTop {
@@ -103,7 +82,7 @@
   justify-content: center;
   border: 1px solid var(--border);
   color: var(--accent);
-  transition: all 0.3s;
+  transition: all 0.25s;
 }
 
 .serviceCard:hover .iconWrap {
@@ -120,7 +99,7 @@
 
 .cardTitle {
   font-family: var(--font-sans);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--text-primary);
   line-height: 1.4;
@@ -129,8 +108,74 @@
 
 .cardDesc {
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-secondary);
-  line-height: 1.7;
+  line-height: 1.75;
   flex: 1;
+}
+
+.cardLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  cursor: pointer;
+  align-self: flex-start;
+  transition: gap 0.2s;
+}
+
+.cardLink:hover {
+  gap: 10px;
+}
+
+.ctaCard {
+  background: var(--bg-secondary);
+}
+
+.ctaEyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.ctaTitle {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 12px 20px;
+  background: var(--accent);
+  color: #0a0a0a;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background 0.25s, transform 0.25s;
+}
+
+.ctaButton:hover {
+  background: #d4b578;
+  transform: translateY(-1px);
 }

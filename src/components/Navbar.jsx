@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
-import { PERSONAL } from '../config'
+import { Menu, X, ArrowUpRight } from 'lucide-react'
 import styles from './Navbar.module.css'
 
 const NAV_LINKS = [
   { label: 'Home', href: '#home' },
   { label: 'About', href: '#about' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Skills', href: '#skills' },
   { label: 'Services', href: '#services' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Process', href: '#process' },
   { label: 'Contact', href: '#contact' },
 ]
 
@@ -22,11 +21,11 @@ export default function Navbar() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 40)
 
-      const sections = NAV_LINKS.map(l => l.href.slice(1))
+      const sections = NAV_LINKS.map((l) => l.href.slice(1))
       let current = 'home'
       for (const id of sections) {
         const el = document.getElementById(id)
-        if (el && window.scrollY >= el.offsetTop - 120) current = id
+        if (el && window.scrollY >= el.offsetTop - 140) current = id
       }
       setActiveSection(current)
     }
@@ -47,19 +46,17 @@ export default function Navbar() {
   return (
     <motion.header
       className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}
-      initial={{ y: -80, opacity: 0 }}
+      initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
     >
       <div className={styles.inner}>
-        {/* Wordmark */}
         <a href="#home" className={styles.wordmark} onClick={(e) => handleNavClick(e, '#home')}>
           <span className={styles.wordmarkText}>SHAFEY</span>
           <span className={styles.wordmarkAccent}> ALI</span>
         </a>
 
-        {/* Desktop Nav */}
-        <nav className={styles.nav}>
+        <nav className={styles.nav} aria-label="Primary Navigation">
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
@@ -72,23 +69,26 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Available Badge + Mobile Toggle */}
         <div className={styles.right}>
-          <div className={styles.availableBadge}>
-            <span className={styles.availableDot} />
-            Available
-          </div>
+          <a
+            href="#contact"
+            className={styles.ctaBtn}
+            onClick={(e) => handleNavClick(e, '#contact')}
+          >
+            Let&rsquo;s Talk
+            <ArrowUpRight size={14} />
+          </a>
           <button
             className={styles.menuBtn}
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
+            aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={mobileOpen}
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -96,7 +96,7 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
           >
             {NAV_LINKS.map((link, i) => (
               <motion.a
@@ -104,14 +104,24 @@ export default function Navbar() {
                 href={link.href}
                 className={`${styles.mobileNavLink} ${activeSection === link.href.slice(1) ? styles.active : ''}`}
                 onClick={(e) => handleNavClick(e, link.href)}
-                initial={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, x: -16 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.05 }}
+                transition={{ delay: i * 0.04 }}
               >
                 <span className={styles.mobileNavNum}>0{i + 1}</span>
                 {link.label}
               </motion.a>
             ))}
+            <div className={styles.mobileCtaWrap}>
+              <a
+                href="#contact"
+                className={styles.mobileCta}
+                onClick={(e) => handleNavClick(e, '#contact')}
+              >
+                Let&rsquo;s Talk
+                <ArrowUpRight size={14} />
+              </a>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

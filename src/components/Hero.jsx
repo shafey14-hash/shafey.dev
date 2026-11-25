@@ -1,13 +1,13 @@
-import { Suspense, lazy, useRef } from 'react'
+import { Suspense, lazy } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowDown, Github, Linkedin, ExternalLink } from 'lucide-react'
-import { PERSONAL } from '../config'
+import { ArrowDown, ArrowUpRight, Github, Linkedin } from 'lucide-react'
+import { PERSONAL, HERO } from '../config'
 import styles from './Hero.module.css'
 
 const HeroScene = lazy(() => import('./HeroScene'))
 
 const fadeUp = {
-  initial: { opacity: 0, y: 32 },
+  initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
 }
 
@@ -19,14 +19,14 @@ export default function Hero() {
   return (
     <section id="home" className={styles.hero}>
       {/* 3D Scene */}
-      <div className={styles.canvas}>
+      <div className={styles.canvas} aria-hidden="true">
         <Suspense fallback={null}>
           <HeroScene />
         </Suspense>
       </div>
 
       {/* Overlay gradient */}
-      <div className={styles.overlay} />
+      <div className={styles.overlay} aria-hidden="true" />
 
       {/* Content */}
       <div className={styles.content}>
@@ -34,79 +34,74 @@ export default function Hero() {
           <motion.div
             className={styles.badge}
             {...fadeUp}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.5, delay: 0.05 }}
           >
             <span className={styles.badgeDot} />
-            Available for Freelance Projects
+            {HERO.badge}
           </motion.div>
 
           <motion.h1
             className={styles.heading}
             {...fadeUp}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
           >
-            Building Digital{' '}
-            <em className={styles.italic}>Experiences</em>{' '}
-            That Make an Impact.
+            Turning Ideas Into{' '}
+            <em className={styles.italic}>Powerful</em>{' '}
+            Digital Products.
           </motion.h1>
 
           <motion.div
             className={styles.name}
             {...fadeUp}
-            transition={{ duration: 0.7, delay: 0.35 }}
+            transition={{ duration: 0.55, delay: 0.2 }}
           >
-            <span className={styles.nameLabel}>Developer</span>
             <span className={styles.nameText}>{PERSONAL.name.toUpperCase()}</span>
+            <span className={styles.nameSep}>·</span>
+            <span className={styles.nameRole}>{PERSONAL.role}</span>
           </motion.div>
-
-          <motion.p
-            className={styles.subtitle}
-            {...fadeUp}
-            transition={{ duration: 0.7, delay: 0.45 }}
-          >
-            Computer Science Student · AI Enthusiast · Freelance Developer
-          </motion.p>
 
           <motion.p
             className={styles.description}
             {...fadeUp}
-            transition={{ duration: 0.7, delay: 0.55 }}
+            transition={{ duration: 0.55, delay: 0.28 }}
           >
-            I build modern websites, intelligent applications, and interactive digital
-            experiences that turn ideas into reality.
+            {HERO.subheadline}
           </motion.p>
 
           <motion.div
             className={styles.ctas}
             {...fadeUp}
-            transition={{ duration: 0.7, delay: 0.65 }}
+            transition={{ duration: 0.55, delay: 0.36 }}
           >
             <button
+              type="button"
               className={styles.ctaPrimary}
-              onClick={() => handleScroll('projects')}
-            >
-              Explore My Work
-              <ArrowDown size={15} />
-            </button>
-            <button
-              className={styles.ctaOutline}
               onClick={() => handleScroll('contact')}
             >
-              Let's Talk
+              {HERO.primaryCta}
+              <ArrowUpRight size={15} />
+            </button>
+            <button
+              type="button"
+              className={styles.ctaOutline}
+              onClick={() => handleScroll('projects')}
+            >
+              {HERO.secondaryCta}
+              <ArrowDown size={15} />
             </button>
           </motion.div>
 
           <motion.div
             className={styles.socials}
             {...fadeUp}
-            transition={{ duration: 0.7, delay: 0.75 }}
+            transition={{ duration: 0.55, delay: 0.44 }}
           >
             <a
               href={PERSONAL.github}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.socialLink}
-              aria-label="GitHub"
+              aria-label="Shafey Ali on GitHub"
             >
               <Github size={16} />
               <span>GitHub</span>
@@ -117,46 +112,43 @@ export default function Hero() {
               target="_blank"
               rel="noopener noreferrer"
               className={styles.socialLink}
-              aria-label="LinkedIn"
+              aria-label="Shafey Ali on LinkedIn"
             >
               <Linkedin size={16} />
               <span>LinkedIn</span>
             </a>
+            <span className={styles.socialDivider} />
+            <button
+              type="button"
+              className={styles.auditTextLink}
+              onClick={() => handleScroll('audit')}
+            >
+              Free Website Audit →
+            </button>
           </motion.div>
         </div>
 
-        {/* Right side — vertical metadata */}
+        {/* Right side — concise positioning metadata */}
         <motion.div
           className={styles.meta}
-          initial={{ opacity: 0, x: 20 }}
+          initial={{ opacity: 0, x: 16 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
+          transition={{ duration: 0.65, delay: 0.45 }}
         >
           <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Year</span>
-            <span className={styles.metaValue}>2024</span>
+            <span className={styles.metaLabel}>Focus</span>
+            <span className={styles.metaValue}>Web &amp; SaaS</span>
           </div>
           <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Role</span>
-            <span className={styles.metaValue}>Developer</span>
+            <span className={styles.metaLabel}>Specialty</span>
+            <span className={styles.metaValue}>AI Solutions</span>
           </div>
           <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Exp</span>
-            <span className={styles.metaValue}>1 Yr</span>
+            <span className={styles.metaLabel}>Work</span>
+            <span className={styles.metaValue}>Remote</span>
           </div>
         </motion.div>
       </div>
-
-      {/* Bottom scroll indicator */}
-      <motion.div
-        className={styles.scrollHint}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.6 }}
-      >
-        <span className={styles.scrollText}>Scroll</span>
-        <div className={styles.scrollLine} />
-      </motion.div>
     </section>
   )
 }

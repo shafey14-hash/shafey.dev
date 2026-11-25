@@ -4,15 +4,15 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  padding: 24px 0;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 22px 0;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .header.scrolled {
-  padding: 16px 0;
-  background: rgba(10, 10, 10, 0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  padding: 14px 0;
+  background: rgba(10, 10, 10, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
 }
 
@@ -23,6 +23,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 24px;
 }
 
 .wordmark {
@@ -35,7 +36,7 @@
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 0;
+  flex-shrink: 0;
 }
 
 .wordmarkText {
@@ -49,7 +50,7 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: 36px;
+  gap: 30px;
 }
 
 .navLink {
@@ -89,35 +90,28 @@
 .right {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
 }
 
-.availableBadge {
-  display: flex;
+.ctaBtn {
+  display: inline-flex;
   align-items: center;
-  gap: 7px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
+  gap: 6px;
+  padding: 10px 18px;
+  background: var(--accent);
+  color: #0a0a0a;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-secondary);
-  padding: 6px 12px;
-  border: 1px solid var(--border);
-  border-radius: 2px;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.availableDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #4ade80;
-  box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(0.85); }
+.ctaBtn:hover {
+  background: #d4b578;
+  transform: translateY(-1px);
 }
 
 .menuBtn {
@@ -141,14 +135,14 @@
   overflow: hidden;
   border-top: 1px solid var(--border);
   background: rgba(10, 10, 10, 0.98);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(16px);
 }
 
 .mobileNavLink {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 18px 32px;
+  padding: 16px 32px;
   font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 500;
@@ -174,8 +168,29 @@
   min-width: 24px;
 }
 
-@media (max-width: 900px) {
-  .nav, .availableBadge {
+.mobileCtaWrap {
+  padding: 18px 32px;
+}
+
+.mobileCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 13px 20px;
+  background: var(--accent);
+  color: #0a0a0a;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+@media (max-width: 960px) {
+  .nav, .ctaBtn {
     display: none;
   }
   .menuBtn {
@@ -186,5 +201,11 @@
 @media (max-width: 768px) {
   .inner {
     padding: 0 20px;
+  }
+  .mobileNavLink {
+    padding: 16px 20px;
+  }
+  .mobileCtaWrap {
+    padding: 16px 20px;
   }
 }

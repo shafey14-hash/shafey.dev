@@ -5,9 +5,9 @@ import styles from './Footer.module.css'
 const NAV_LINKS = [
   { label: 'Home', href: '#home' },
   { label: 'About', href: '#about' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Skills', href: '#skills' },
   { label: 'Services', href: '#services' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Process', href: '#process' },
   { label: 'Contact', href: '#contact' },
 ]
 
@@ -32,8 +32,8 @@ export default function Footer() {
               <span>SHAFEY</span>
               <span className={styles.accent}> ALI</span>
             </div>
-            <nav className={styles.nav}>
-              {NAV_LINKS.map(l => (
+            <nav className={styles.nav} aria-label="Footer Navigation">
+              {NAV_LINKS.map((l) => (
                 <a
                   key={l.href}
                   href={l.href}
@@ -45,7 +45,7 @@ export default function Footer() {
               ))}
             </nav>
             <div className={styles.socials}>
-              {SOCIALS.map(s => (
+              {SOCIALS.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
